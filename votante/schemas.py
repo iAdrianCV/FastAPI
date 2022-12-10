@@ -1,0 +1,83 @@
+from pydantic import BaseModel, Field, EmailStr
+from typing import List, Optional
+from rich import print
+from bson import ObjectId
+from enum import Enum
+from datetime import date
+
+
+class PyObjectId(ObjectId):
+    @classmethod
+    def __get_validators__(cls):
+        yield cls.validate
+
+    @classmethod
+    def validate(cls, v):
+        if not ObjectId.is_valid(v):
+            raise ValueError("Invalid objectid")
+        return ObjectId(v)
+
+    @classmethod
+    def __modify_schema__(cls, field_schema):
+        field_schema.update(type="string")
+
+class VotanteBase(BaseModel):
+    nombres:str
+    apellidos:str
+    dni:str
+    fecha_nacimiento: date 
+    fecha_emision: date
+    fecha_vencimiento: date
+    email: EmailStr
+
+class VotanteCreate(VotanteBase):
+    password: str
+    pass
+
+class Votante(VotanteBase):
+    id: PyObjectId = Field(default_factory=PyObjectId, alias="_id")
+
+    class Config:
+        allow_population_by_field_name = True
+        arbitrary_types_allowed = True
+        json_encoders = {ObjectId: str}
+        schema_extra = {
+            "example": {
+                "nombres": "Diego ronaldo",
+                "apellidos" : "Arellano Bardales",
+                "dni": "75847852",
+                "fecha_nacimiento": "1995-11-05",
+                "fecha_emision": "2005-11-05",
+                "fecha_vencimiento": "2023-11-05",
+                "email": "ronaldo@gmail.com"
+            }
+        }
+
+class UpdateVotante(BaseModel):
+    nombres:Optional[str]
+    apellidos:Optional[str]
+    dni:Optional[str]
+    fecha_nacimiento: Optional[date] 
+    fecha_emision: Optional[date]
+    fecha_vencimiento: Optional[date]
+    email: Optional[EmailStr]
+
+    def dict(self):
+        data={}
+        if self.nombres:
+            data["nombres"]=self.nombres
+        if self.apellidos:
+            data["apellidos"]=self.apellidos
+        if self.dni:
+            data["dni"]=self.dni
+        if self.fecha_nacimiento:
+            data["fecha_nacimiento"]=self.fecha_nacimiento
+        if self.fecha_emision:
+            data["fecha_emision"]=self.fecha_emision
+        if self.fecha_vencimiento:
+            data["fecha_vencimiento"]=self.fecha_vencimiento
+        if self.email:
+            data["email"]=self.email
+
+        return data
+
