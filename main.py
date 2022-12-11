@@ -32,6 +32,7 @@ origins = [
     "http://localhost:8000",
     "http://localhost:3000",
     "http://localhost:4200",
+    "https://1mxr64.csb.app",
 ]
 
 
