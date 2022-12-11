@@ -3,7 +3,7 @@ from admin.schemas import ObjectId
 from typing import List
 from candidato.crud import list_candidato, create_candidato
 from admin.crud import list_admin, create_admin
-from admin.schemas import Admin, AdminCreate, VotanteApto, VotanteCreate
+from admin.schemas import Admin, AdminCreate, VotanteApto
 from candidato.schemas import Candidato, CandidatoCreate
 from institucion.crud import list_institucion, create_institucion
 from institucion.schemas import Institucion, InstitucionCreate
