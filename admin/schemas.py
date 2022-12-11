@@ -3,7 +3,7 @@ from typing import List, Optional
 from rich import print
 from bson import ObjectId
 from enum import Enum
-
+from datetime import date
 
 
 class PyObjectId(ObjectId):
@@ -66,3 +66,37 @@ class UpdateAdmin(BaseModel):
 
         return data
 
+
+
+
+
+
+
+class VotanteAptoBase(BaseModel):
+    nombres:str
+    apellidos:str
+    dni:str
+    fecha_nacimiento: date 
+    fecha_emision: date
+    fecha_vencimiento: date
+
+class VotanteAptoCreate(VotanteAptoBase):
+    pass
+
+class VotanteApto(VotanteAptoBase):
+    id: PyObjectId = Field(default_factory=PyObjectId, alias="_id")
+
+    class Config:
+        allow_population_by_field_name = True
+        arbitrary_types_allowed = True
+        json_encoders = {ObjectId: str}
+        schema_extra = {
+            "example": {
+                "nombres": "Diego ronaldo",
+                "apellidos" : "Arellano Bardales",
+                "dni": "75847852",
+                "fecha_nacimiento": "1995-11-05",
+                "fecha_emision": "2005-11-05",
+                "fecha_vencimiento": "2023-11-05",
+            }
+        }

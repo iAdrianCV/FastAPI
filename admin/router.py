@@ -3,7 +3,7 @@ from admin.schemas import ObjectId
 from typing import List
 from candidato.crud import list_candidato, create_candidato
 from admin.crud import list_admin, create_admin
-from admin.schemas import Admin, AdminCreate
+from admin.schemas import Admin, AdminCreate, VotanteApto, VotanteCreate
 from candidato.schemas import Candidato, CandidatoCreate
 from institucion.crud import list_institucion, create_institucion
 from institucion.schemas import Institucion, InstitucionCreate
@@ -274,6 +274,7 @@ async def save_votantes_aptos(
     path="/api/votante_apto",
     tags=["admin"],
     status_code=status.HTTP_200_OK,
+    response_model=List[VotanteApto]
 )
 async def get_votantes_aptops(
     # admin:Admin=Depends(get_current_admin),
@@ -291,6 +292,7 @@ async def get_votantes_aptops(
     path="/api/votante_apto/{dni_votante_apto}",
     tags=["admin"],
     status_code=status.HTTP_200_OK,
+    response_model=VotanteApto
 )
 async def get_votante_aptop(
     dni_votante_apto:str,
