@@ -270,6 +270,40 @@ async def save_votantes_aptos(
 
 
 
+@admin_routs.get(
+    path="/api/votante_apto",
+    tags=["admin"],
+    status_code=status.HTTP_200_OK,
+)
+async def get_votantes_aptops(
+    # admin:Admin=Depends(get_current_admin),
+    db=Depends(get_database)):
+
+    collection_votantes_aptos = db["votantes_aptos"]
+    list_votante = list(collection_votantes_aptos.find())
+
+    if not list_votante:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="votantes no encontrados")
+    return list_votante
+
+
+@admin_routs.get(
+    path="/api/votante_apto/{dni_votante_apto}",
+    tags=["admin"],
+    status_code=status.HTTP_200_OK,
+)
+async def get_votante_aptop(
+    dni_votante_apto:str,
+    db=Depends(get_database)):
+
+    collection_votantes_aptos = db["votantes_aptos"]
+    votante_apto = collection_votantes_aptos.find_one({'dni':dni_votante_apto})
+    if not votante_apto:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="votante no encontrado")
+    
+    return votante_apto
+
+
 
 
 
