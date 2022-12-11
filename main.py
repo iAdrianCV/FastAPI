@@ -22,11 +22,6 @@ app = FastAPI(
 class Msg(BaseModel):
     msg: str
 
-
-@app.get("/")
-async def root():
-    return {"message": "Hello World. Welcome to FastAPI!"}
-
 origins = [
     # your frontend port
     "http://localhost:8000",
