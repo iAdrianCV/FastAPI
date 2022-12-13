@@ -28,6 +28,20 @@ async def get_votante(votante_dni:str,db=Depends(get_database)):
     else:
         return "the item is not found"
 
+
+@votante_routs.get(path="/api/votante/{email}",
+                tags=["Votante"],
+                response_model=Votante
+                )
+async def get_votante_emaiñ(email:str,db=Depends(get_database)):
+    collection_name=db["votante"]
+    votante=collection_name.find_one({'email':email})
+    if votante:
+        return votante
+    else:
+        return "the item is not found"
+
+
 @votante_routs.post(
     path="/api/votante/",
     tags=["Votante"],
