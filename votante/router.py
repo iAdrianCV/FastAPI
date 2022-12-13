@@ -16,13 +16,13 @@ from fastapi import (
 
 votante_routs = APIRouter()
 
-@votante_routs.get(path="/api/votante/{votante_id}",
+@votante_routs.get(path="/api/votante/{votante_dni}",
                 tags=["Votante"],
                 response_model=Votante
                 )
-async def get_votante(votante_id:str,db=Depends(get_database)):
+async def get_votante(votante_dni:str,db=Depends(get_database)):
     collection_name=db["votante"]
-    votante=collection_name.find_one({'_id':ObjectId(votante_id)})
+    votante=collection_name.find_one({'dni':votante_dni})
     if votante:
         return votante
     else:
