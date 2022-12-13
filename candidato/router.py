@@ -26,15 +26,15 @@ async def get_candidatos(
     db=Depends(get_database)):
     return list_candidato(db)
 
-@candidato_routs.get(path="/api/candidato/{candidato_id}",
+@candidato_routs.get(path="/api/candidato/{candidato_dni}",
                 tags=["candidato"],
                 response_model=Candidato
                 )
-async def get_candidato(candidato_id:str,
+async def get_candidato(candidato_dni:str,
                 votante:Votante=Depends(get_current_votante),
                 db=Depends(get_database)):
     collection_name=db["candidato"]
-    candidato=collection_name.find_one({'_id':ObjectId(candidato_id)})
+    candidato=collection_name.find_one({'dni':candidato_dni})
     if candidato:
         return candidato
     else:
