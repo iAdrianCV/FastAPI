@@ -7,6 +7,7 @@ from app.utils import validation_email_candidato_exist
 from votante.crud import list_votante, create_votante
 from votante.schemas import Votante, VotanteCreate
 from app.auth import get_password_hash
+from urllib.parse import unquote_plus
 
 from fastapi import (
     APIRouter, HTTPException, Depends, 
@@ -34,8 +35,10 @@ async def get_votante(votante_dni:str,db=Depends(get_database)):
                 response_model=Votante
                 )
 async def get_votante_emaiñ(email:str,db=Depends(get_database)):
+
+    decoded_email = unquote_plus(email)
     collection_name=db["votante"]
-    votante=collection_name.find_one({'email':email})
+    votante=collection_name.find_one({'email':decoded_email})
     if votante:
         return votante
     else:
