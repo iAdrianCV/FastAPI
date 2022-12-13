@@ -14,6 +14,7 @@ from pydantic import EmailStr
 from app.exceptions import diferent_passwords_exception, registred_email_exception
 from app.utils import validation_email_candidato_exist
 import pandas as pd
+from app.auth import get_password_hash
 
 
 from votante.schemas import Votante, VotanteCreate
@@ -134,7 +135,7 @@ async def save_candidato(nombres: str = Form(...,example="Alejandro"),
         "rol": rol,
         "partido_politico": partido_politico,
         "email": email,
-        "password": password
+        "password": get_password_hash(password)
     }
 
     collection_name=db["candidato"]
@@ -174,7 +175,7 @@ async def save_institucion(nombres: str = Form(...,example="Alejandro"),
         "cargo": cargo,
         "entidad": entidad,
         "email": email,
-        "password": password
+        "password": get_password_hash(password)
     }
 
     collection_name=db["institucion"]
