@@ -8,6 +8,7 @@ from votante.crud import list_votante, create_votante
 from votante.schemas import Votante, VotanteCreate
 from app.auth import get_password_hash
 from urllib.parse import unquote_plus
+from votante.auth import get_current_votante
 
 from fastapi import (
     APIRouter, HTTPException, Depends, 
@@ -108,6 +109,16 @@ async def save_votante(nombres: str = Form(...,example="Alejandro"),
     collection_name=db["votante"]
     collection_name.insert_one(votante)
     return votante
+
+
+
+@votante_routs.get(path="/api/votante/",
+                tags=["Votante"],
+                response_model=Votante
+                )
+async def get_votante_by_token(db=Depends(get_database),votante=Depends(get_current_votante)):
+    return votante
+
 
 
 
