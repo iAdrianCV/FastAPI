@@ -73,7 +73,7 @@ async def get_voto(
             votante:Votante=Depends(get_current_votante),
             db=Depends(get_database)):
     collection_name=db["voto"]
-    voto=collection_name.find_one({'dni':votante["dni"]})
+    voto=collection_name.find_one({'dni_votante':votante["dni"]})
     voto_exitoso = False
     if voto:
         voto_exitoso = True
