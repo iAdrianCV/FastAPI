@@ -9,6 +9,7 @@ from votante.schemas import Votante, VotanteCreate
 from estadisticas.schemas import Estadisticas, EstadisticasCreate, EstadisticasTotales
 from institucion.auth import get_current_institucion
 from institucion.schemas import Institucion
+from candidato.schemas import  Candidato
 
 from fastapi import (
     APIRouter, HTTPException, Depends, 
@@ -64,4 +65,21 @@ async def get_votos(
     else:
         return "the item is not found"
 
+
+@estadisticas_routs.get(path="/api/candidatos/",
+                tags=["Estadisticas"],
+                response_model=list[Candidato]
+                )
+async def get_candidatos(
+    institucion:Institucion=Depends(get_current_institucion),
+    db=Depends(get_database)):
+    collection_name=db["candidato"]
+    candidato=list(collection_name.find())
+
+    if not institucion["rol"]=="onpe":
+        raise riesgos_exception(status.HTTP_401_UNAUTHORIZED, "No eres usuario onpe")
+    
+    
+
+    return candidato
 

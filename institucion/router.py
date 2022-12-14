@@ -3,8 +3,13 @@ from institucion.schemas import ObjectId
 from typing import List
 from institucion.crud import list_institucion, create_institucion
 from institucion.schemas import Institucion, InstitucionCreate
+from institucion.auth import get_current_institucion
+
 from admin.schemas import Admin, AdminCreate
 from admin.auth import get_current_admin
+from candidato.schemas import Candidato
+from candidato.crud import list_candidato
+
 
 from fastapi import (
     APIRouter, HTTPException, Depends, 
@@ -31,3 +36,13 @@ async def get_institucion(
 
 
 
+@institucion_routs.get(
+    path="/api/candidato",
+    tags=["candidato"],
+    status_code=status.HTTP_200_OK,
+    response_model=List[Candidato]
+)
+async def get_candidatos(
+    institucion:Institucion=Depends(get_current_institucion),
+    db=Depends(get_database)):
+    return list_candidato(db)
