@@ -64,7 +64,21 @@ async def save_voto(
 
 
 
-
+@voto_routs.get(path="/api/voto/votante",
+                tags=["Voto"],
+                response_model=bool
+                )
+async def get_voto(
+            votante:Votante=Depends(get_current_votante),
+            db=Depends(get_database)):
+    collection_name=db["voto"]
+    voto=collection_name.find({'dni':votante["dni"]})
+    voto_exitoso = False
+    if voto:
+        voto_exitoso = True
+        return voto_exitoso
+    else:
+        return voto_exitoso
 
 
 
