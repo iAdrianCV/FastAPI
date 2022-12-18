@@ -97,7 +97,6 @@ async def get_admin(admin_id:str,
     response_model=Admin
 )
 async def save_admin(admin: AdminCreate,
-                admin_user:Admin=Depends(get_current_admin),
                 db=Depends(get_database)):
     collection_name=db["admin"]
     admin=admin.dict()
