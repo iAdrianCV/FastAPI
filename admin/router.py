@@ -50,6 +50,46 @@ async def get_candidatos(
     db=Depends(get_database)):
     return list_candidato(db)
 
+
+
+@admin_routs.get(path="/api/admin/candidato/{candidato_dni}",
+                tags=["Admin"],
+                response_model=Candidato
+                )
+async def get_candidato(candidato_dni:str,
+                admin:Admin=Depends(get_current_admin),
+                db=Depends(get_database)
+):
+    collection_name=db["candidato"]
+    candidato=collection_name.find_one({'dni':candidato_dni})
+    if candidato:
+        return candidato
+    else:
+        return "the item is not found"
+
+@admin_routs.get(path="/api/admin/votante-apto/{votante_dni}",
+                tags=["Votante"],
+                response_model=Votante
+                )
+async def get_votante(votante_dni:str,db=Depends(get_database)):
+    collection_name=db["votantes_aptos"]
+    votante=collection_name.find_one({'dni':votante_dni})
+    if votante:
+        return votante
+    else:
+        return "the item is not found"
+
+
+
+
+
+
+
+
+
+
+
+
 @admin_routs.get(
     path="/api/institucion",
     tags=["admin"],
@@ -99,15 +139,7 @@ async def get_admin(admin_id:str,
 async def save_admin(admin: AdminCreate,
                 db=Depends(get_database)):
     collection_name=db["admin"]
-    
-    
-    admin={
-          "nombre": admin.nombre,
-          "puesto": admin.puesto,
-          "privilegios": admin.privilegios,
-          "email": admin.email,
-          "password": get_password_hash(admin.password)
-    }
+    admin=admin.dict()
     collection_name.insert_one(admin)
     return admin
 
@@ -312,6 +344,9 @@ async def get_votante_aptop(
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="votante no encontrado")
     
     return votante_apto
+
+
+
 
 
 
