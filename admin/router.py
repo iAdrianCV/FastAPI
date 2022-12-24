@@ -15,6 +15,7 @@ from app.exceptions import diferent_passwords_exception, registred_email_excepti
 from app.utils import validation_email_candidato_exist
 import pandas as pd
 from app.auth import get_password_hash
+from app.exceptions import riesgos_exception
 
 
 from votante.schemas import Votante, VotanteCreate
@@ -53,7 +54,7 @@ async def get_candidatos(
 
 
 @admin_routs.get(path="/api/admin/candidato/{candidato_dni}",
-                tags=["Admin"],
+                tags=["admin"],
                 response_model=Candidato
                 )
 async def get_candidato(candidato_dni:str,
@@ -68,7 +69,7 @@ async def get_candidato(candidato_dni:str,
         return "the item is not found"
 
 @admin_routs.get(path="/api/admin/votante-apto/{votante_dni}",
-                tags=["Votante"],
+                tags=["admin"],
                 response_model=Votante
                 )
 async def get_votante(votante_dni:str,db=Depends(get_database)):
@@ -180,6 +181,51 @@ async def save_candidato(nombres: str = Form(...,example="Alejandro"),
     collection_name=db["candidato"]
     collection_name.insert_one(candidato)
     return candidato
+
+
+
+
+@admin_routs.post(
+    path="/api/admin/votante-apto/",
+    tags=["admin"],
+    status_code=status.HTTP_201_CREATED,
+    response_model=VotanteApto
+)
+async def save_votante_apto(nombres: str = Form(...,example="Alejandro"),
+                    apellidos: str = Form(...,example="Merino Bardales"),
+                    dni: str = Form(..., example="75845636"),
+                    fecha_nacimiento: str = Form(...,example="2022-10-15"),
+                    fecha_emision: str = Form(...,example="2022-10-15"),
+                    fecha_vencimiento: str = Form(...,example="2022-10-15"),
+                    email: EmailStr = Form(...,example="diego@gmail.com"),
+                    db=Depends(get_database)):
+
+
+    votante_apto_exist = db["votantes_aptos"].find_one({'dni':dni})
+
+    if votante_apto_exist:
+        raise riesgos_exception(status.HTTP_400_BAD_REQUEST, detail="No estas autorizado a votar")
+
+    votante_apto = {
+        "nombres": nombres,
+        "apellidos" :apellidos,
+        "dni": dni,
+        "fecha_nacimiento": fecha_nacimiento,
+        "fecha_emision": fecha_emision,
+        "fecha_vencimiento": fecha_vencimiento,
+        "email": email,
+    }
+
+    collection_name=db["votantes_aptos"]
+    collection_name.insert_one(votante_apto)
+    return votante_apto
+
+
+
+
+
+
+
 
 
 @admin_routs.post(
@@ -344,9 +390,6 @@ async def get_votante_aptop(
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="votante no encontrado")
     
     return votante_apto
-
-
-
 
 
 
