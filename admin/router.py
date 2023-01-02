@@ -1,3 +1,7 @@
+
+from admin.crud import edit_votante_apto
+from admin.schemas import UpdateVotanteApto
+from candidato.schemas import UpdateCandidato
 from database.client import get_database
 from admin.schemas import ObjectId
 from typing import List
@@ -16,6 +20,7 @@ from app.utils import validation_email_candidato_exist
 import pandas as pd
 from app.auth import get_password_hash
 from app.exceptions import riesgos_exception
+from typing import Optional
 
 
 from votante.schemas import Votante, VotanteCreate
@@ -79,14 +84,6 @@ async def get_votante(votante_dni:str,db=Depends(get_database)):
         return votante
     else:
         return "the item is not found"
-
-
-
-
-
-
-
-
 
 
 
@@ -406,6 +403,121 @@ async def get_votante_aptop(
 
 
 
+
+#edits
+
+
+
+@admin_routs.put(
+    path="/api/admin/votante_apto/",
+    tags=["admin"],
+    status_code=status.HTTP_200_OK,
+    response_model=VotanteApto
+)
+async def update_votante_apto(
+                        nombres: Optional[str] = Form(None, example="Alejandro"),
+                        apellidos: Optional[str] = Form(None, example="Merino Bardales"),
+                        dni: Optional[str] = Form(None, example="75845636"),
+                        fecha_nacimiento: Optional[str] = Form(None, example="2022-10-15"),
+                        fecha_emision: Optional[str] = Form(None, example="2022-10-15"),
+                        fecha_vencimiento: Optional[str] = Form(None, example="2022-10-15"),
+                        admin:Admin=Depends(get_current_admin),
+                        db=Depends(get_database)):
+
+
+    votante_apto_update = {
+        "nombres": nombres,
+        "apellidos": apellidos,
+        "fecha_nacimiento": fecha_nacimiento,
+        "fecha_emision": fecha_emision,
+        "fecha_vencimiento": fecha_vencimiento
+    }
+
+
+    collection_name=db["votantes_aptos"]
+    query={'dni': dni}
+    new_values={'$set':votante_apto_update}
+    collection_name.update_one(query, new_values)
+
+
+    return collection_name.find_one({'dni': dni})
+
+
+
+
+@admin_routs.put(
+    path="/api/admin/candidato/",
+    tags=["admin"],
+    status_code=status.HTTP_200_OK,
+    response_model=Candidato
+)
+async def update_candidato(
+                        nombres: Optional[str] = Form(None, example="Alejandro"),
+                        apellidos: Optional[str] = Form(None, example="Merino Bardales"),
+                        dni: Optional[str] = Form(None, example="77777777"),
+                        rol : Optional[str] = Form(None, example="candidato"),
+                        partido_politico : Optional[str] = Form(None, example="Somos Peru"),
+                        email : Optional[str] = Form(None, example="candidato@gmail.com"),
+                        admin:Admin=Depends(get_current_admin),
+                        db=Depends(get_database)):
+
+
+    candidato_update = {
+        "nombres": nombres,
+        "apellidos": apellidos,
+        "rol": rol,
+        "partido_politico": partido_politico,
+        "email": email
+    }
+
+
+    collection_name=db["candidato"]
+    query={'dni': dni}
+    new_values={'$set':candidato_update}
+    collection_name.update_one(query, new_values)
+
+
+    return collection_name.find_one({'dni': dni})
+
+
+
+
+@admin_routs.put(
+    path="/api/admin/institucion/",
+    tags=["admin"],
+    status_code=status.HTTP_200_OK,
+    response_model=Institucion
+)
+async def update_institucion(
+                        nombres: Optional[str] = Form(None, example="Alejandro"),
+                        apellidos: Optional[str] = Form(None, example="Merino Bardales"),
+                        dni: Optional[str] = Form(None, example="77777777"),
+                        rol : Optional[str] = Form(None, example="institucion"),
+                        cargo : Optional[str] = Form(None, example="onpe"),
+                        entidad  : Optional[str] = Form(None, example="onpe"),
+                        email   : Optional[str] = Form(None, example="onpe@gmail.com"),
+                        admin:Admin=Depends(get_current_admin),
+                        db=Depends(get_database)):
+
+
+    institucion_update = {
+        "nombres": nombres,
+        "apellidos": apellidos,
+        "rol": rol,
+        "cargo": cargo,
+        "entidad": entidad,
+        "email": email
+
+    }
+
+
+    collection_name=db["institucion"]
+    query={'dni': dni}
+    new_values={'$set':institucion_update}
+    collection_name.update_one(query, new_values)
+
+
+    return collection_name.find_one({'dni': dni})
 
 
 
