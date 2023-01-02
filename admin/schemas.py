@@ -71,7 +71,7 @@ class UpdateAdmin(BaseModel):
 
 
 
-
+#votantesaptos
 class VotanteAptoBase(BaseModel):
     nombres:str
     apellidos:str
