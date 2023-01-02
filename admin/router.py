@@ -1,5 +1,4 @@
 
-
 from database.client import get_database
 from admin.schemas import ObjectId
 from typing import List
@@ -412,13 +411,14 @@ async def get_votante_aptop(
     response_model=VotanteApto
 )
 async def update_votante_apto(
+                        admin:Admin=Depends(get_current_admin),
                         nombres: Optional[str] = Form(None, example="Alejandro"),
                         apellidos: Optional[str] = Form(None, example="Merino Bardales"),
                         dni: Optional[str] = Form(None, example="75845636"),
                         fecha_nacimiento: Optional[str] = Form(None, example="2022-10-15"),
                         fecha_emision: Optional[str] = Form(None, example="2022-10-15"),
                         fecha_vencimiento: Optional[str] = Form(None, example="2022-10-15"),
-                        admin:Admin=Depends(get_current_admin),
+                        
                         db=Depends(get_database)):
 
 
@@ -449,13 +449,14 @@ async def update_votante_apto(
     response_model=Candidato
 )
 async def update_candidato(
+                        admin:Admin=Depends(get_current_admin),
                         nombres: Optional[str] = Form(None, example="Alejandro"),
                         apellidos: Optional[str] = Form(None, example="Merino Bardales"),
                         dni: Optional[str] = Form(None, example="77777777"),
                         rol : Optional[str] = Form(None, example="candidato"),
                         partido_politico : Optional[str] = Form(None, example="Somos Peru"),
                         email : Optional[str] = Form(None, example="candidato@gmail.com"),
-                        admin:Admin=Depends(get_current_admin),
+                        
                         db=Depends(get_database)):
 
 
@@ -486,6 +487,7 @@ async def update_candidato(
     response_model=Institucion
 )
 async def update_institucion(
+                        admin:Admin=Depends(get_current_admin),
                         nombres: Optional[str] = Form(None, example="Alejandro"),
                         apellidos: Optional[str] = Form(None, example="Merino Bardales"),
                         dni: Optional[str] = Form(None, example="77777777"),
@@ -493,10 +495,9 @@ async def update_institucion(
                         cargo : Optional[str] = Form(None, example="onpe"),
                         entidad  : Optional[str] = Form(None, example="onpe"),
                         email   : Optional[str] = Form(None, example="onpe@gmail.com"),
-                        admin:Admin=Depends(get_current_admin),
                         db=Depends(get_database)):
 
-
+    #asdas
     institucion_update = {
         "nombres": nombres,
         "apellidos": apellidos,
@@ -515,9 +516,6 @@ async def update_institucion(
 
 
     return collection_name.find_one({'dni': dni})
-
-
-
 
 
 
