@@ -1,16 +1,16 @@
 
+
 from database.client import get_database
 from admin.schemas import ObjectId
 from typing import List
-from candidato.crud import list_candidato, create_candidato
-from admin.crud import list_admin, create_admin
+from candidato.crud import list_candidato
+from admin.crud import list_admin
 from admin.schemas import Admin, AdminCreate, VotanteApto
-from candidato.schemas import Candidato, CandidatoCreate
-from institucion.crud import list_institucion, create_institucion
-from institucion.schemas import Institucion, InstitucionCreate
+from candidato.schemas import Candidato
+from institucion.crud import list_institucion
+from institucion.schemas import Institucion
 from admin.auth import get_current_admin
-from votante.crud import list_votante, create_votante
-from datetime import datetime, date
+from votante.crud import list_votante
 from pydantic import EmailStr
 from app.exceptions import diferent_passwords_exception, registred_email_exception
 from app.utils import validation_email_candidato_exist
@@ -19,7 +19,8 @@ from app.auth import get_password_hash
 from app.exceptions import riesgos_exception
 from typing import Optional
 
-from votante.schemas import Votante, VotanteCreate
+
+from votante.schemas import Votante
 
 from fastapi import (
     APIRouter, HTTPException, Depends, 
