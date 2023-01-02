@@ -1,7 +1,4 @@
 
-from admin.crud import edit_votante_apto
-from admin.schemas import UpdateVotanteApto
-from candidato.schemas import UpdateCandidato
 from database.client import get_database
 from admin.schemas import ObjectId
 from typing import List
@@ -21,7 +18,6 @@ import pandas as pd
 from app.auth import get_password_hash
 from app.exceptions import riesgos_exception
 from typing import Optional
-
 
 from votante.schemas import Votante, VotanteCreate
 
