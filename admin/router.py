@@ -276,23 +276,36 @@ async def delete_admin(admin_id:str,
     collection_name.delete_one({'_id':ObjectId(admin_id)})
     return "this item has been deleted"
 
-@admin_routs.delete(path="/api/admin/candidato/{candidato_id}",
+@admin_routs.delete(path="/api/admin/candidato/{dni_candidato}",
                     tags=["admin"])
-async def delete_candidato(candidato_id:str,
+async def delete_candidato(dni_candidato:str,
                     admin:Admin=Depends(get_current_admin),
                     db=Depends(get_database)):
     collection_name=db["candidato"]
-    collection_name.delete_one({'_id':ObjectId(candidato_id)})
+    collection_name.delete_one({'dni': dni_candidato})
     return "this item has been deleted"
 
-@admin_routs.delete(path="/api/admin/institucion/{institucion_id}",
+@admin_routs.delete(path="/api/admin/institucion/{dni_institucion}",
                     tags=["admin"])
-async def delete_institucion(institucion_id:str,
+async def delete_institucion(dni_institucion:str,
                     admin:Admin=Depends(get_current_admin),
                     db=Depends(get_database)):
     collection_name=db["institucion"]
-    collection_name.delete_one({'_id':ObjectId(institucion_id)})
+    collection_name.delete_one({'dni': dni_institucion})
     return "this item has been deleted"
+
+
+@admin_routs.delete(path="/api/admin/votante-apto/{dni_votante_apto}",
+                    tags=["admin"])
+async def delete_institucion(dni_votante_apto:str,
+                    admin:Admin=Depends(get_current_admin),
+                    db=Depends(get_database)):
+    collection_name=db["votantes_aptos"]
+    collection_name.delete_one({'dni': dni_votante_apto})
+
+    return "this item has been deleted"
+
+
 
 @admin_routs.delete(path="/api/admin/votante/{votante_id}",
                     tags=["admin"])
@@ -388,6 +401,9 @@ async def get_votante_aptop(
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="votante no encontrado")
     
     return votante_apto
+
+
+
 
 
 
