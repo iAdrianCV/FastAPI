@@ -100,3 +100,30 @@ class VotanteApto(VotanteAptoBase):
                 "fecha_vencimiento": "2023-11-05",
             }
         }
+        
+    
+class UpdateVotanteApto(BaseModel):
+    nombres:Optional[str]
+    apellidos:Optional[str]
+    dni:Optional[str]
+    fecha_nacimiento: Optional[date]  
+    fecha_emision: Optional[date]  
+    fecha_vencimiento: Optional[date]  
+
+    def dict(self):
+        data={}
+        if self.nombres:
+            data["nombres"]=self.nombres
+        if self.apellidos:
+            data["apellidos"]=self.apellidos
+        if self.dni:
+            data["dni"]=self.dni
+        if self.fecha_nacimiento:
+            data["fecha_nacimiento"]=self.fecha_nacimiento
+        if self.fecha_emision:
+            data["fecha_emision"]=self.fecha_emision
+        if self.fecha_vencimiento:
+            data["fecha_vencimiento"]=self.fecha_vencimiento
+
+        return data
+
