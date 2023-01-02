@@ -197,7 +197,6 @@ async def save_votante_apto(nombres: str = Form(...,example="Alejandro"),
                     fecha_nacimiento: str = Form(...,example="2022-10-15"),
                     fecha_emision: str = Form(...,example="2022-10-15"),
                     fecha_vencimiento: str = Form(...,example="2022-10-15"),
-                    email: EmailStr = Form(...,example="diego@gmail.com"),
                     db=Depends(get_database)):
 
 
@@ -213,7 +212,6 @@ async def save_votante_apto(nombres: str = Form(...,example="Alejandro"),
         "fecha_nacimiento": fecha_nacimiento,
         "fecha_emision": fecha_emision,
         "fecha_vencimiento": fecha_vencimiento,
-        "email": email,
     }
 
     collection_name=db["votantes_aptos"]
@@ -390,6 +388,9 @@ async def get_votante_aptop(
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="votante no encontrado")
     
     return votante_apto
+
+
+
 
 
 
