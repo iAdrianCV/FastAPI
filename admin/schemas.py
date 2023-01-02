@@ -100,8 +100,8 @@ class VotanteApto(VotanteAptoBase):
                 "fecha_vencimiento": "2023-11-05",
             }
         }
-        
-    
+
+
 class UpdateVotanteApto(BaseModel):
     nombres:Optional[str]
     apellidos:Optional[str]
@@ -126,4 +126,6 @@ class UpdateVotanteApto(BaseModel):
             data["fecha_vencimiento"]=self.fecha_vencimiento
 
         return data
+
+
 
