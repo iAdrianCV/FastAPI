@@ -54,6 +54,24 @@ async def get_candidatos(
 
 
 
+@admin_routs.get(path="/api/admin/institucion/{institucion_dni}",
+                tags=["admin"],
+                response_model=Institucion
+                )
+async def get_institucion(
+                institucion_dni:str,
+                admin:Admin=Depends(get_current_admin),
+                db=Depends(get_database)):
+    collection_name=db["institucion"]
+    institucion=collection_name.find_one({'dni': institucion_dni})
+    if institucion:
+        return institucion
+    else:
+        return "the item is not found"
+
+
+
+
 @admin_routs.get(path="/api/admin/candidato/{candidato_dni}",
                 tags=["admin"],
                 response_model=Candidato
@@ -516,9 +534,6 @@ async def update_institucion(
 
 
     return collection_name.find_one({'dni': dni})
-
-
-
 
 
 
