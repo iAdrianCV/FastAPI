@@ -151,7 +151,15 @@ async def get_admin(admin_id:str,
 async def save_admin(admin: AdminCreate,
                 db=Depends(get_database)):
     collection_name=db["admin"]
-    admin=admin.dict()
+    admin = {
+        "nombre": admin["nombre"],
+        "puesto": admin["puesto"],
+        "privilegios": admin["privilegios"],
+        "email": admin["email"],
+        "password": get_password_hash(admin["password"])
+    }
+    
+    
     collection_name.insert_one(admin)
     return admin
 
