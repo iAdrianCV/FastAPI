@@ -130,7 +130,6 @@ async def get_votantes(
                 response_model=Admin
                 )
 async def get_admin(admin_id:str,
-                admin:Admin=Depends(get_current_admin),
                 db=Depends(get_database)):
     collection_name=db["admin"]
     admin=collection_name.find_one({'_id':ObjectId(admin_id)})
