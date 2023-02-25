@@ -48,7 +48,6 @@ async def get_votos_candidato(
                 response_model=EstadisticasTotales
                 )
 async def get_votos(
-    institucion:Institucion=Depends(get_current_institucion),
     db=Depends(get_database)):
     collection_name=db["voto"]
     votos=len(list(collection_name.find()))
@@ -71,7 +70,6 @@ async def get_votos(
                 response_model=list[Candidato]
                 )
 async def get_candidatos(
-    institucion:Institucion=Depends(get_current_institucion),
     db=Depends(get_database)):
     collection_name=db["candidato"]
     candidato=list(collection_name.find())
